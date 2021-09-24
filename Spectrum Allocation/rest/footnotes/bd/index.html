@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+   <title>Footnote</title>
+   
+   <style type="text/css">
+       body {
+          font-family: Verdana, Arial, Sans-Serif;
+          font-size: 13px;
+       }
+      
+       dt {
+           font-weight: bold;
+       }
+       
+       td:nth-child(1) {
+	       font-weight: bold;
+	       vertical-align: top;
+       }
+       
+       tr:nth-child(odd) {
+	       background: #eeeeff;
+       }   
+       
+       li {
+           display: inline-block;
+       }    
+       
+       .links {
+           font-weight: bold;
+       }
+   </style>
+   
+   <script type="text/javascript" src="../../js/jquery-1.11.2.js"></script>
+   
+   <script type="text/javascript">
+   
+   
+       $(document).ready(function () {
+           
+           
+//            $("td.detail").each(function() {
+//                 var html = $(this).html()
+//                 var arr = html.split(/\ +/);
+//                 arr.forEach(function(item, index) {
+// 	    	        var regex = /5\.[0-9]+[A-Z]?/;
+// 	    	        var match = item.match(regex);
+// 					if (match && arr[index-1] !== 'Note') {
+// 					     arr[index] = item.substring(0, item.indexOf(match[0])) +
+// 					         '<a href="#' + match[0] + '">' + match[0] + '</a>' +
+// 					         item.substring(item.indexOf(match[0]) + match[0].length, item.length -1 );
+// 					}
+// 				});
+// 				html = arr.join (' ');
+// 				$(this).html(html);
+//            });    
+           
+           $("td.detail").each(function() {
+               var rePattern = /WRC-[0-9]+/gi;
+           	   var html = $(this).html();
+			   html = html.replace(rePattern, function(match, text, urlId){
+				  // return an appropriately-formatted link
+				  var queryParam = match.toLowerCase();
+				  return '<a href="http://www.itu.int/net/ITU-R/index.asp?category=conferences&rlink=' + queryParam + '">' + match + '</a>';
+			   });
+               $(this).html(html);
+           });
+           
+//            $("td.detail").each(function() {
+//                var rePattern = /Note ([0-9]+\.[0-9]+\b)/gi;
+//            	   var html = $(this).html();
+// 			   html = html.replace(rePattern, function(match, idx, idx2, text){
+// 				  // return an appropriately-formatted link
+// 				  console.log(match);
+// 				  return ' <span class="GN">' + match + '</span></a>';
+// 			   });
+//                $(this).html(html);
+//            });  
+                             
+           
+           
+           //$(this).html( $(this).html().replace(/(WRC-/g,"$") );
+       
+       });
+   </script>
+      
+</head>
+
+
+<body>
+
+<h1>Footnotes for Bangladesh</h1>
+
+<div style="margin-bottom: 20px">
+<span class="links">Links: </span> <a href="http://www.btrc.gov.bd/sites/default/files/National%20Frequency%20Allocation%20Plan%28NFAP%29_1.pdf">official source</a>
+</div>
+
+<table>
+  
+
+</table>
+
+</table>
+</body>
+</html>

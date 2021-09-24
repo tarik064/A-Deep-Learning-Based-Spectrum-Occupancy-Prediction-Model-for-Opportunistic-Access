@@ -1,0 +1,234 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+   <title>Frequency Allocation Table Viewer</title>
+   <meta name="lang" content="en"/>
+   
+   <style type="text/css">
+      body {
+          font-family: Verdana, Arial, Sans-Serif;
+      }
+      
+      table {
+         /* border: solid 1px black; */
+         font-size: 9pt;
+      }
+      
+      #spectrum {
+         display: block;         
+      }
+      
+      #spectrumview {
+         /* width: 400px; height: 100px; overflow-x: scroll; overflow-y: hidden; */
+         margin-bottom:20px; 
+      }
+      
+      table {
+         border-collapse: collapse;  
+         margin-top: 20px;
+         width: 900px;
+      }
+      
+      table a {
+         color: #4782F7;
+      }
+     
+      td {
+         padding: 5px;
+         padding-left: 10px; 
+         border-bottom: solid 1px black;         
+         vertical-align: top;              
+      }
+       
+      td:nth-child(1) {
+         width: 200px;
+      }
+      
+      td:nth-child(2) {
+         width: 100px;
+      }  
+      
+      th {
+         border-left: 1px solid white;
+          color: white;
+          background-color: darkblue;         
+      }
+      
+      th:nth-child(1) {
+         border-left: none;
+      }   
+          
+      
+      .band {
+         font-weight: bold;
+         font-size: 10pt;
+      }
+      
+      
+      ul {
+          padding-left: 0px;
+      }
+      li {
+         display: block;
+         padding-left: 0px;
+         margin-left: 0px;
+      }
+    
+      
+      .footnotes li {
+          display: inline-block;
+          margin-right: 5px;
+      }
+      
+      label {
+          width: 100px;
+          display: inline-block;
+          
+          margin-bottom: 5px;
+      }
+      
+      #legend li {
+         display: inline-block;
+         padding-left: 20px;
+      }
+      
+      span.secondary {
+          color: #555;
+      }
+            
+      tbody {
+          overflow: scroll;
+          height: 200px;
+      }
+      
+      #content {
+          margin-left: 20px;
+      }
+      
+      #message {
+          margin-top: 20px;
+          font-weight: bold;
+      }
+      
+      
+      .row {
+          margin-top: 5px;
+      }
+      
+      #spectrum {
+          width: 900px;
+          height: 130px;
+          border: 1px #aaa solid;
+          margin-bottom: 5px;
+      }
+      
+      #spectrumbox {
+          font-size: 80%;
+          margin-bottom: 20px;
+      }
+      
+      rect.labelledRange {
+          fill: rgba(0,0,0,0);
+          stroke: rgba(0,0,0,0);      
+      }
+      
+      rect.labelledRange:hover {
+          fill: rgba(150,240,150,1);
+          fill-opacity: 0.5;    
+
+          stroke: rgba(150,240,150,1);
+          stroke-opacity: 1;    
+      }      
+      
+      rect.regulatedspectrum {
+          fill: rgb(200,200,255);
+          stroke: rgb(200,200,255);
+      }
+      
+      div.regulatedspectrum {
+          background-color: rgb(200,200,255);
+          width: 10px;
+          height: 10px; 
+          display: inline-block;
+          border: solid 1px black;
+      }
+      
+      .hidden {
+          display: none;
+      }
+           
+      .error {
+          background-color: pink;
+      }          
+   </style>
+   
+   <script type="text/javascript" src="frameworks/jquery-2.1.4.min.js"></script>  
+   <script type="text/javascript" src="frameworks/snap.svg-min.js"></script>
+
+   <script type="text/javascript" src="js/services.js"></script>
+   <script type="text/javascript" src="js/labelled-bands.js"></script>
+
+   <script type="text/javascript" src="js/utility-functions.js"></script>
+   <script type="text/javascript" src="js/common.js"></script>
+
+   <script type="text/javascript" src="js/full-table.js"></script>
+   <script type="text/javascript" src="js/spectrum.js"></script>
+
+   
+</head>
+
+<body>
+
+    <h1>Spectrum Viewer</h1>
+    
+    <div id="content">
+
+        <div id="spectrumbox">	
+	    <div id="spectrum"></div>
+	    Radio Spectrum, with selected frequency allocation range highlighted <div class="regulatedspectrum"></div>
+	    </div>
+
+		<div class="row">&nbsp;</div>
+
+			<div class="row">
+		    <label>Bands:</label> 
+		    <input type="text" name="startFreq" id="startFreq" size="6" value="3"/> 
+		    <select name="unitLF">
+		    <option value="0"selected="">Hz</option>
+		    <option value="3">kHz</option>
+		    <option value="6">MHz</option>
+		    <option value="9" >GHz</option>
+		    <option value="12">THz</option>
+		    </select>		    
+		    - 
+		    
+		    <input type="text" name="endFreq" id="endFreq" size="6" value="300"/> 
+		    <select name="unitUF">
+		    <option value="0">Hz</option>
+		    <option value="3">kHz</option>
+		    <option value="6">MHz</option>
+		    <option value="9" selected="">GHz</option>
+		    <option value="12">THz</option>
+		    </select>
+		    
+		</div>
+		
+		
+		<div class="row">
+		<label>Service:</label> <select name="service"><option value="">All</option></select>
+		</div>		
+		<div class="row">
+		<input type="button" value="Apply" id="applyFilter"/>
+		</div>			
+        
+		<table id="bands">
+		<thead>
+		   <tr><th>Band</th><th>Activity</th><th>Services</th></tr>
+		</thead>
+		<tbody>
+		</tbody>
+		</table>
+
+    </div>
+</body>
+</html> 

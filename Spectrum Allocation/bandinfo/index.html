@@ -1,0 +1,189 @@
+<html>
+
+<head>
+
+   <script type="text/javascript" src="../viewer/js/jquery-2.1.4.min.js"></script>  
+   <script type="text/javascript" src="../js/services.js"></script>  
+
+   <style type="text/css">
+       label {
+           font-weight: bold;
+        }    
+        
+        html, body {
+           font-family: sans-serif;
+           background-color: #eee;
+           margin-left: 0;
+           font-size: 90%;
+        }      
+        
+        .freq {
+           font-weight: normal;
+        }
+        
+        #region {
+            margin-top: 40px;
+            font-style: italic;
+            color: #777;
+        }
+   </style>
+
+
+	<script type="text/javascript">
+		'use strict'
+
+	    var lowerFrequency, upperFrequency, pageArgs = {};
+
+		function hzToHuman(value, fixedPlaces) {
+		   return valueToMagnitude(value, 'Hz', fixedPlaces);
+		}
+
+		function valueToMagnitude(value, unit, fixedPlaces) { 
+			var idx;
+			var unitExponents = [
+				[0,''],
+				[3,'k'],
+				[6,'M'],
+				[9,'G'],
+				[12,'T'],
+				[15,'P'],
+				[18,'E'],
+				[21,'Y']
+			];
+	
+			
+	
+			var sign = (value<0?-1:1);
+			value = Math.abs(value);
+			var i = 0; idx=0;
+			for (i=unitExponents.length-1; i >=0; i--) {
+				if (value >= Math.pow(10, unitExponents[i][0])) {
+					idx = i;
+					break;
+				}
+			} 
+			value = (value / Math.pow(10, unitExponents[idx][0]));
+		  
+			value = value * sign;
+  
+			 if (fixedPlaces !== undefined) {
+				value = (value * 1.0).toFixed(fixedPlaces);
+			}
+	 
+			return value + ' ' + unitExponents[idx][1] + unit;    
+		}
+	
+		function getService(text) {
+			var candidate = '' , i;
+			text = text + '';
+			for (i = 0; i < services.length; i++) {
+				if (text.toLowerCase().startsWith(services[i].toLowerCase()) && services[i].length > candidate.length) {
+					candidate = services[i];
+				}
+			}
+			return (candidate?candidate:'');
+		}
+
+		function capitaliseService(text) {
+			var service = getService(text);
+			if (service) {
+				return service.toUpperCase() + text.substring(service.length, text.length);
+			}
+		}
+	
+		function filterBands (bands, lowerFrequency, upperFrequency) {
+			var i, filteredBands = [];
+			console.log(arguments);
+			for (i=0; i< bands.length; i++) {
+				if ( lowerFrequency < parseInt(bands[i].uf) && upperFrequency > parseInt(bands[i].lf) ) {
+					filteredBands.push(bands[i]);
+				}
+			}	
+			return filteredBands;
+		}
+	
+		function loadAllocationTable(region) {
+			var url = '../rest/tables/' + region + '/index.json';
+			$.getJSON( url, function( data ) {
+				var i, j, k, cellText, services, service, primary, footnotes, serviceName;
+			   console.log(data);
+
+			   var filteredBands = filterBands(data.tables[0].bands, lowerFrequency, upperFrequency);
+			   console.log(filteredBands);
+			   var html = '';
+			   for (i=0; i< filteredBands.length; i++) {
+				   html += '<div>';               
+				   html += '<h4>' + hzToHuman(filteredBands[i].lf,3) + ' - ' + hzToHuman(filteredBands[i].uf,3) + '</h4>';
+			   
+				   services = filteredBands[i].services;
+				   if (services) {
+					   html += '<ul>';
+					   for (j=0; j< services.length; j++) {
+							serviceName = services[j].desc;
+							if ( services[j].cat === 'p') {
+								serviceName = capitaliseService(serviceName);
+								primary = true;
+							}			       
+							html += '<li>' + serviceName + '</li>';
+					   }
+					   html += '<ul>';
+				   }
+			   
+				   html += '</div>';
+			   }
+		   
+			   $('#allocBands').html(html);   
+			});
+		}
+
+	   $(document).ready(function () {
+		   var i, nameVal;
+	   
+	        if (!String.prototype.startsWith) {
+				String.prototype.startsWith = function(searchString, position) {
+					position = position || 0;
+					return this.indexOf(searchString, position) === position;
+				};
+		   }
+	   
+		   if (document.location.search && document.location.search.trim().length > 0) {
+			   var parts = document.location.search.substring(1).split('&');
+			   for (i=0; i<parts.length; i++) {
+				  nameVal = parts[i].split('=');
+				  pageArgs[nameVal[0]] = nameVal[1];
+			   }
+	   
+			   lowerFrequency = pageArgs.lf;
+			   upperFrequency = pageArgs.uf;
+	
+			   $('#lowerFrequency').html(hzToHuman(pageArgs.lf, 5));
+			   $('#upperFrequency').html(hzToHuman(pageArgs.uf, 5));       
+			   $('#region span').html(pageArgs.region);   
+	   
+			   loadAllocationTable(pageArgs.region); 
+	   
+	           if (pageArgs.debug) {
+	               $('body').append('<div style="margin-top: 20px;">Debug<br/>URL: ' + document.location.href.replace(/\&/g, '&amp;') + '</div>');
+	               $('body').append('<div id="debugconsole"></div>');
+	           }
+			}
+		});
+	</script>
+</head>
+
+<body>
+
+<h3><span>Display Band:</span> <span class="freq" id="lowerFrequency">XXX MHz</span> - <span class="freq" id="upperFrequency">XXX MHz</span></h3>
+
+
+<div id="allocBands"></div>
+
+<div>
+
+
+<div id="region">
+Region: <span>undefined</span>
+</div>
+
+
+</body>

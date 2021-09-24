@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <title>Frequency Allocations</title>
+   <meta name="lang" content="en"/>
+   
+   <style type="text/css">
+
+      
+      #allocationChart {
+          width: 1600px;
+          height: 1024px;
+          margin-bottom: 5px;
+      }
+      
+      #allocationChartBox {
+          font-family: Verdana, Arial, Sans-Serif;      
+          font-size: 12px;
+          font-weight: normal;
+          margin-bottom: 20px;
+      }
+      
+      .colorbox {
+          width: 20px;
+          height: 10px;
+      }
+      
+      li {
+          display: inline-block;
+          width: 300px;
+          margin: 4px;
+          white-space: nowrap;
+          
+      }
+      
+      li div {
+          display: inline-block;
+          margin-right: 10px;
+      }
+
+      li div:nth-child(1) {
+          border: solid 1px; black;
+      }
+      
+      li div:nth-child(2) {
+          display: inline-block;
+          white-space: wrap;
+      }
+          
+      .legendItemActive div:nth-child(1){
+          border: solid 1px black;
+      }
+      
+      .legendItemActive {
+          font-weight: bold;
+      }      
+      
+ 
+      .outline {
+          stroke: grey;
+      }
+
+      
+      .outlineActive {
+          stroke: black;      
+      }
+      
+      .rectHighlight {
+          /* stroke: yellow; */
+          stroke: black;
+          -webkit-filter:  drop-shadow(16px 16px 20px blue);
+          filter: drop-shadow(16px 16px 20px blue);
+      }
+      
+      .rectHidden {
+          display: none;
+      }      
+      
+      .row {
+          margin-bottom: 5px;
+      }
+      
+      .blankAllocation {
+          background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxwYXRoIGQ9Ik0tMiAxMEwxMCAtMlpNMTAgNkw2IDEwWk0tMiAyTDIgLTIiIHN0cm9rZT0iIzIyMiIgc3Ryb2tlLXdpZHRoPSI0LjUiPjwvcGF0aD4KPC9zdmc+"),url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgo8bGluZWFyR3JhZGllbnQgaWQ9ImciIHgyPSIxIiB5Mj0iMSI+CjxzdG9wIHN0b3AtY29sb3I9IiNGMTkiPjwvc3RvcD4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMENGIj48L3N0b3A+CjwvbGluZWFyR3JhZGllbnQ+CjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZykiPjwvcmVjdD4KPC9zdmc+");
+      }
+      
+   </style>
+   
+   <script type="text/javascript">
+       var baseRestPath = 'rest';
+   </script>
+   
+   <script type="text/javascript" src="frameworks/jquery-2.1.4.min.js"></script>  
+   <script type="text/javascript" src="frameworks/snap.svg-min.js"></script>
+
+   <script type="text/javascript" src="js/services.js"></script>
+   <script type="text/javascript" src="js/labelled-bands.js"></script>
+
+
+   <script type="text/javascript" src="js/utility-functions.js"></script>
+   <script type="text/javascript" src="js/common.js"></script>
+   <script type="text/javascript" src="js/services-and-colors.js"></script>
+   <script type="text/javascript" src="js/allocation-chart.js"></script>
+
+</head>
+
+<body>
+
+    <h1>Frequency Allocations</h1>
+    
+    
+    <div id="content">
+                
+        <div class="row">
+   		<label>Region:</label> <select id="regionSelector"></select>
+        </div>
+		
+		
+        
+
+        <div id="allocationChartBox">	
+	    <div id="allocationChart"></div>
+	    </div>
+
+        <h2>Radio Services Color Legend</h2>
+        
+        <div id="legend"></div>	    
+    </div>
+    
+</body>
+</html> 
